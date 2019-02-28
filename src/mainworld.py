@@ -5,7 +5,7 @@ import random
 class MainWorld:
 
     def __init__(self):
-        self.uwp = []
+        self.uwp = [None] * 13
 
     def get_name(self):
         return self.uwp[0]
@@ -88,9 +88,9 @@ class MainWorld:
         roll = random.randi(lower, upper)
         if self.get_size() == 0 or self.get_size() == 1:
             self.uwp[5] = 0
-        elif self.get_atmo() ~= 13 and (temp == 10 or temp == 11):
+        elif self.get_atmo() != 13 and (temp == 10 or temp == 11):
             self.uwp[5] = roll - 2
-        elif self.get_atmo() ~= 13 and temp >= 12:
+        elif self.get_atmo() != 13 and temp >= 12:
             self.uwp[5] = roll - 6
         else:
             self.uwp[5] = roll
@@ -211,14 +211,135 @@ class MainWorld:
             bases = []
         self.uwp[10] = bases
 
-        def set_amber(self):
-            if self.get_atmo() >= 10 or self.get_gov() == 0 or self.get_gov() == 7 or self.get_gov() == 10 or self.get_law() == 0 or self.get_law() >= 9:
-                self.uwp[12] = 'A'
+    def set_amber(self):
+        if self.get_atmo() >= 10 or self.get_gov() == 0 or self.get_gov() == 7 or self.get_gov() == 10 or self.get_law() == 0 or self.get_law() >= 9:
+            self.uwp[12] = 'A'
 
-        def set_red(self):
-            if self.get_zone() ~= 'R':
-                self.uwp[12] = 'R'
-            else:
-                self.uwp[12] = ''
+    def set_red(self):
+        if self.get_zone() != 'R':
+            self.uwp[12] = 'R'
+        else:
+            self.uwp[12] = ''
 
-        
+    def update_codes(self):
+        codes = []
+        if (self.get_atmo() >= 4 and self.get_atmo() <= 9) and (self.get_hydro() >= 4 and self.get_hydro() <= 8) and (self.get_pop() >= 5 and self.get_pop() <= 7):
+            codes.append('Ag')
+        if self.get_size() == 0 and self.get_atmo() == 0 and self.get_hydro() == 0:
+            codes.append('As')
+        if self.get_pop() == 0 and self.get_gov() == 0 and self.get_law() == 0:
+            codes.append('Ba')
+        if self.get_atmo() >= 2 and self.get_hydro() == 0:
+            codes.append('De')
+        if self.get_atmo() >= 10 and self.get_hydro() >= 1:
+            codes.append('Fl')
+        if self.get_size() >= 5 and (self.get_atmo() >= 4 and self.get_atmo() <= 9) and (self.get_hydro() >= 4 and self.get_hydro() <= 8):
+            codes.append('Ga')
+        if self.get_pop() >= 9:
+            codes.append('Hi')
+        if self.get_tech() >= 12:
+            codes.append('Ht')
+        if (self.get_atmo() == 1 or self.get_atmo() == 0) and self.get_hydro() >= 1:
+            codes.append('IC')
+        if ((self.get_atmo() >= 0 and self.get_atmo() <= 2) or self.get_atmo() == 4 or self.get_atmo() == 9) and self.get_pop() >= 9:
+            codes.append('In')
+        if self.get_pop() >= 1 and self.get_pop() <= 3:
+            codes.append('Lo')
+        if self.get_tech() <= 5:
+            codes.append('Lt')
+        if (self.get_atmo() >= 0 and self.get_atmo() <= 3) and (self.get_hydro() >= 0 and self.get_hydro() <= 3) and self.get_pop() >= 6:
+            codes.append('Na')
+        if self.get_pop() >= 4 and self.get_pop() <= 6:
+            codes.append('NI')
+        if (self.get_atmo() >= 2 and self.get_atmo() <= 5) and (self.get_hydro() >= 0 and self.get_hydro() <= 3):
+            codes.append('Po')
+        if (self.get_atmo() == 6 or self.get_atmo() == 8) and (self.get_pop() >= 6 and self.get_pop() <= 8):
+            codes.append('Ri')
+        if self.get_atmo() == 0:
+            codes.append('Va')
+        if self.get_hydro() == 10:
+            codes.append('Wa')
+        self.uwp[11] = codes
+
+    def __str__(self):
+        name = self.uwp[0]
+
+        x = self.uwp[1][0]
+        y = self.uwp[1][2]
+
+        if x < 10:
+            x = '0{0}'.format(x)
+        else:
+            x = '{0}'.format(x)
+        if y < 10:
+            y = '0{0}'.format(y)
+        else:
+            y = '{0}'.format(y)
+        placement = x + y
+
+        starport = self.uwp[2]
+
+        if self.uwp[3] == 10:
+            size == 'A'
+        else:
+            size = '{0}'.format(self.uwp[3])
+
+        if self.uwp[4] == 10:
+            atmo = 'A'
+        elif self.uwp[4] == 11:
+            atmo = 'B'
+        elif self.uwp[4] == 12:
+            atmo = 'C'
+        elif self.uwp[4] == 13:
+            atmo = 'D'
+        elif self.uwp[4] == 14:
+            atmo = 'E'
+        elif self.uwp[4] == 15:
+            atmo = 'F'
+        else:
+            atmo = '{0}'.format(self.uwp[4])
+
+        if self.uwp[5] == 10:
+            hydro = 'A'
+        else:
+            hydro = '{0}'.format(self.uwp[5])
+
+        if self.uwp[6] == 10:
+            pop = 'A'
+        elif self.uwp[6] == 11:
+            pop = 'B'
+        elif self.uwp[6] == 12:
+            pop = 'C'
+        else:
+            pop = '{0}'.format(self.uwp[6])
+
+        if self.uwp[7] == 10:
+            gov = 'A'
+        elif self.uwp[7] == 11:
+            gov = 'B'
+        elif self.uwp[7] == 12:
+            gov = 'C'
+        elif self.uwp[7] == 13:
+            gov = 'D'
+        else:
+            gov = '{0}'.format(self.uwp[7])
+
+        if self.uwp[8] > 9:
+            law = '9'
+        else:
+            law = '{0}'.format(self.uwp[8])
+
+        tech = '{0}'.format(self.uwp[9])
+
+        bases = ''
+        for base in self.uwp[10]:
+            bases = bases + ' ' + base
+
+        codes = ''
+        for code in self.uwp[11]:
+            codes = code + ' ' + code
+
+        zone = '{0}'.format(self.uwp[12])
+
+
+        return '{0}\t\t{1}{2}\t{3}{4}{5}{6}{7}{8}{9}-{10}\t{11}\t\t{12}'.format(name, placement, starport, size, atmo, hydro, pop, gov, law, tech, bases, codes, zone)
