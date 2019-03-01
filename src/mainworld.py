@@ -53,15 +53,19 @@ class MainWorld:
         self.uwp[1] = (x, y)
 
     def set_size(self):
-        self.uwp[3] = random.randi(0,10)
+        self.uwp[3] = random.randint(0,10)
 
     def set_atmo(self):
         lower = self.get_size() - 5
         upper = self.get_size() + 5
-        self.uwp[4] = random.randi(lower, upper)
+        roll = random.randint(lower, upper)
+        if roll >= 0:
+            self.uwp[4] = roll
+        else:
+            self.uwp[4] = 0
 
-    def find_temperature(self):
-        roll = random.randi(2, 12)
+    def find_temp(self):
+        roll = random.randint(2, 12)
         if self.get_atmo() == 0 or self.get_atmo() == 1:
             temp = roll
         elif self.get_atmo() == 2 or self.get_atmo() == 3:
@@ -85,34 +89,51 @@ class MainWorld:
         temp = self.find_temp()
         lower = self.get_size() - 5
         upper = self.get_size() + 5
-        roll = random.randi(lower, upper)
+        roll = random.randint(lower, upper)
         if self.get_size() == 0 or self.get_size() == 1:
             self.uwp[5] = 0
         elif self.get_atmo() != 13 and (temp == 10 or temp == 11):
-            self.uwp[5] = roll - 2
+            if (roll - 2) < 0:
+                self.uwp[5] = 0
+            else:
+                self.uwp[5] = roll - 2
         elif self.get_atmo() != 13 and temp >= 12:
-            self.uwp[5] = roll - 6
+            if (roll - 6) < 0:
+                self.uwp[5] = 0
+            else:
+                self.uwp[5] = roll - 6
         else:
-            self.uwp[5] = roll
+            if roll < 0:
+                self.uwp[5] = 0
+            else:
+                self.uwp[5] = roll
 
     def set_pop(self):
-        self.uwp[6] = random.randi(0,12)
+        self.uwp[6] = random.randint(0,12)
 
     def set_gov(self):
+        roll = random.randint(-5, 5) + self.get_pop()
         if self.get_pop() == 0:
             self.uwp[7] = 0
         else:
-            self.uwp[7] = random.randi(-5, 5) + self.get_pop()
+            if roll < 0:
+                self.uwp[7] = 0
+            else:
+                self.uwp[7] = roll
 
     def set_law(self):
         #I AM THE LAW
+        roll = random.randint(-5, 5) + self.get_gov()
         if self.get_pop() == 0:
             self.uwp[8] = 0
         else:
-            self.uwp[8] = random.randi(-5, 5) + self.get_gov()
+            if roll < 0:
+                self.uwp[8] = 0
+            else:
+                self.uwp[8] = roll
 
     def set_starport(self):
-        roll = random.randi(2, 12)
+        roll = random.randint(2, 12)
         if roll <= 2:
             self.uwp[2] = 'X'
         elif roll >= 3 and roll <= 4:
@@ -129,7 +150,7 @@ class MainWorld:
             self.uwp[2] = 'X'
 
     def set_tech(self):
-        roll = random.randi(1,6)
+        roll = random.randint(1,6)
         if self.get_starport() == 'A':
             roll = roll + 6
         if self.get_starport() == 'B':
@@ -160,52 +181,56 @@ class MainWorld:
             roll = roll + 2
         if self.get_gov() == 13 or self.get_gov() == 14:
             roll = roll - 2
-        self.uwp[9] = roll
+
+        if roll < 0:
+            self.uwp[9] = 0
+        else:
+            self.uwp[9] = roll
 
     def set_bases(self):
         bases = []
         if self.get_starport() == 'A':
-            if random.randi(2, 12) >= 8:
+            if random.randint(2, 12) >= 8:
                 bases.append('N')
-            if random.randi(2, 12) >= 10:
+            if random.randint(2, 12) >= 10:
                 bases.append('S')
-            if random.randi(2, 12) >= 8:
+            if random.randint(2, 12) >= 8:
                 bases.append('R')
-            if random.randi(2, 12) >= 4:
+            if random.randint(2, 12) >= 4:
                 bases.append('TAS')
-            if random.randi(2, 12) >= 6:
+            if random.randint(2, 12) >= 6:
                 bases.append('IC')
         elif self.get_starport() == 'B':
-            if random.randi(2, 12) >= 8:
+            if random.randint(2, 12) >= 8:
                 bases.append('N')
-            if random.randi(2, 12) >= 8:
+            if random.randint(2, 12) >= 8:
                 bases.append('S')
-            if random.randi(2, 12) >= 10:
+            if random.randint(2, 12) >= 10:
                 bases.append('R')
-            if random.randi(2, 12) >= 6:
+            if random.randint(2, 12) >= 6:
                 bases.append('TAS')
-            if random.randi(2, 12) >= 8:
+            if random.randint(2, 12) >= 8:
                 bases.append('IC')
-            if random.randi(2,12) >= 12:
+            if random.randint(2,12) >= 12:
                 bases.append('P')
         elif self.get_starport() == 'C':
-            if random.randi(2, 12) >= 8:
+            if random.randint(2, 12) >= 8:
                 bases.append('S')
-            if random.randi(2, 12) >= 10:
+            if random.randint(2, 12) >= 10:
                 bases.append('R')
-            if random.randi(2, 12) >= 10:
+            if random.randint(2, 12) >= 10:
                 bases.append('TAS')
-            if random.randi(2, 12) >= 10:
+            if random.randint(2, 12) >= 10:
                 bases.append('IC')
-            if random.randi(2, 12) >= 10:
+            if random.randint(2, 12) >= 10:
                 bases.append('P')
         elif self.get_starport() == 'D':
-            if random.randi(2, 12) >= 7:
+            if random.randint(2, 12) >= 7:
                 bases.append('S')
-            if random.randi(2, 12) >= 12:
+            if random.randint(2, 12) >= 12:
                 bases.append('P')
         elif self.get_starport() == 'E':
-            if random.randi(2, 12) >= 12:
+            if random.randint(2, 12) >= 12:
                 bases.append('P')
         else:
             bases = []
@@ -265,7 +290,7 @@ class MainWorld:
         name = self.uwp[0]
 
         x = self.uwp[1][0]
-        y = self.uwp[1][2]
+        y = self.uwp[1][1]
 
         if x < 10:
             x = '0{0}'.format(x)
@@ -280,7 +305,7 @@ class MainWorld:
         starport = self.uwp[2]
 
         if self.uwp[3] == 10:
-            size == 'A'
+            size = 'A'
         else:
             size = '{0}'.format(self.uwp[3])
 
@@ -337,9 +362,12 @@ class MainWorld:
 
         codes = ''
         for code in self.uwp[11]:
-            codes = code + ' ' + code
+            codes = codes + ' ' + code
 
-        zone = '{0}'.format(self.uwp[12])
+        if self.uwp[12] == None:
+            zone = ''
+        else:
+            zone = '{0}'.format(self.uwp[12])
 
 
-        return '{0}\t\t{1}{2}\t{3}{4}{5}{6}{7}{8}{9}-{10}\t{11}\t\t{12}'.format(name, placement, starport, size, atmo, hydro, pop, gov, law, tech, bases, codes, zone)
+        return '{0}\t\t{1}\t{2}{3}{4}{5}{6}{7}{8}-{9}\t{10}\t{11}\t{12}'.format(name, placement, starport, size, atmo, hydro, pop, gov, law, tech, bases, codes, zone)
