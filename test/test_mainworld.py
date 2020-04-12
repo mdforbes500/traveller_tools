@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
-import mainworld as mw
+from context import traveller as tr
+import unittest
 
 world = mw.MainWorld()
 world.set_name('Ophelia')
